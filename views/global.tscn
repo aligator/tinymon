@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c83jhccwnhbvy"]
+
+[ext_resource type="Script" path="res://scripts/global.gd" id="1_od8b6"]
+[ext_resource type="Script" path="res://addons/awaitable_http_request/awaitable_http_request.gd" id="2_xedp3"]
+
+[node name="Global" type="Node2D" node_paths=PackedStringArray("http")]
+script = ExtResource("1_od8b6")
+http = NodePath("AwaitableHTTPRequest")
+
+[node name="AwaitableHTTPRequest" type="HTTPRequest" parent="."]
+script = ExtResource("2_xedp3")

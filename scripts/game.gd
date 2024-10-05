@@ -53,7 +53,7 @@ func spawn_enemy(in_screen: bool = false):
 	
 	instance.position = Vector2(position[0] + x_modifier + x, position[1] + y_modifier + y)
 	add_child(instance)
-	instance.set_tinymon(Global.new_enemy())
+	instance.set_tinymon(await Global.new_enemy())
 	instance.start_fight.connect(on_start_fight)
 	enemies.append(instance)
 

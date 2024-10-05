@@ -1,0 +1,6 @@
+﻿services:
+  tinymon:
+    image: tinymon
+    build:
+      context: .
+      dockerfile: Tinymon/Dockerfile
