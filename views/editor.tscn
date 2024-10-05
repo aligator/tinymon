@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/color_picker_button.gd" id="1_0nvrx"]
 [ext_resource type="Script" path="res://scripts/editor.gd" id="2_jc87y"]
-[ext_resource type="Script" path="res://play.gd" id="3_4jj25"]
+[ext_resource type="Script" path="res://scripts/play.gd" id="3_4jj25"]
 
 [node name="TinymonEditor" type="Node2D"]
 

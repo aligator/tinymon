@@ -1,11 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://cun0exjmlym3j"]
+[gd_scene load_steps=6 format=3 uid="uid://cun0exjmlym3j"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_23j03"]
 [ext_resource type="PackedScene" uid="uid://cdhlvfj5ww50c" path="res://prefabs/tinymon/Tinymon.tscn" id="2_if7u3"]
 [ext_resource type="Script" path="res://scripts/character.gd" id="2_jhyrg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pamqk"]
-size = Vector2(32, 32)
+size = Vector2(64, 64)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cod36"]
+load_path = "res://.godot/imported/background.png-ea92b95dccc3c7990b1d189785e38db1.ctex"
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_23j03")
@@ -18,3 +21,19 @@ unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
 shape = SubResource("RectangleShape2D_pamqk")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Character"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_base_offset = Vector2(-577, -324)
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1440, 1440)
+
+[node name="BackgroundSprite" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = SubResource("CompressedTexture2D_cod36")
+
+[node name="Fight" type="CanvasLayer" parent="."]
