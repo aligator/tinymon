@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cun0exjmlym3j"]
+[gd_scene load_steps=8 format=3 uid="uid://cun0exjmlym3j"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_23j03"]
 [ext_resource type="PackedScene" uid="uid://cdhlvfj5ww50c" path="res://prefabs/tinymon/Tinymon.tscn" id="2_if7u3"]
 [ext_resource type="Script" path="res://scripts/character.gd" id="2_jhyrg"]
+[ext_resource type="Script" path="res://scripts/fight.gd" id="4_swpe7"]
+[ext_resource type="Script" path="res://scripts/score.gd" id="5_ujiaw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pamqk"]
 size = Vector2(64, 64)
@@ -37,3 +39,54 @@ motion_mirroring = Vector2(1440, 1440)
 texture = SubResource("CompressedTexture2D_cod36")
 
 [node name="Fight" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("4_swpe7")
+
+[node name="CenterContainer" type="CenterContainer" parent="Fight"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VFlowContainer" type="VFlowContainer" parent="Fight/CenterContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+
+[node name="Scissors" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Scissors"
+
+[node name="Stone" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Stone"
+
+[node name="Paper" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Paper"
+
+[node name="Stats" type="CanvasLayer" parent="."]
+
+[node name="VFlowContainer" type="VFlowContainer" parent="Stats"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="Stats/VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Score: "
+
+[node name="Score" type="Label" parent="Stats/VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+script = ExtResource("5_ujiaw")
+
+[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Scissors" to="Fight" method="_on_scissors_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Stone" to="Fight" method="_on_stone_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Paper" to="Fight" method="_on_paper_pressed"]

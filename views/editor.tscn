@@ -20,21 +20,11 @@ size_flags_vertical = 3
 [node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/VBoxContainer/HFlowContainer"]
+[node name="ColorLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+text = "Color:"
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer"]
-layout_mode = 2
-text = "Creature Name:"
-
-[node name="NameEdit" type="LineEdit" parent="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Name"
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/VBoxContainer/HFlowContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 script = ExtResource("1_0nvrx")
@@ -63,12 +53,26 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="HFlowContainer2" type="HFlowContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+layout_mode = 2
+text = "Creature Name:"
+
+[node name="NameEdit" type="LineEdit" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name"
+
 [node name="Play" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 text = "Play!"
 script = ExtResource("3_4jj25")
 
-[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer/ColorPickerButton" method="_on_color_changed"]
-[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/Canvas" method="_on_color_picker_button_color_changed"]
+[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" method="_on_color_changed"]
+[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/Canvas" method="_on_color_picker_button_color_changed"]
 [connection signal="gui_input" from="CanvasLayer/VBoxContainer/Canvas/Background" to="CanvasLayer/VBoxContainer/Canvas" method="_gui_input"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Play" to="CanvasLayer/VBoxContainer/Play" method="_on_pressed"]
