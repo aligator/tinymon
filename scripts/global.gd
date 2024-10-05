@@ -37,12 +37,12 @@ func new_tinymon(tinymon_data: Tinymon_data):
 		var img = Image.new()
 		#'image' is the resulted base64 string from the API
 		img.load_png_from_buffer(Marshalls.base64_to_raw(json.image))
-		tinymon = Tinymon_data.new(json.name, img, json.level, json.progress, json.elementType)
+		tinymon = Tinymon_data.new(json.id, json.name, img, json.level, json.progress, json.elementType)
 
-func new_enemy() -> Tinymon_data:
+func new_enemy() -> Tinymon_data:	
 	# Call api
 	var resp := await http.async_request(
-		server + "/Tinymon/enemy?level="+str(tinymon.level), 
+		server + "/Tinymon/" + tinymon.id + "/enemy?level="+str(tinymon.level), 
 		PackedStringArray([
 			"content-type: application/json",
 		]),
@@ -53,10 +53,10 @@ func new_enemy() -> Tinymon_data:
 		var img = Image.new()
 		#'image' is the resulted base64 string from the API
 		img.load_png_from_buffer(Marshalls.base64_to_raw(json.image))
-		tinymon = Tinymon_data.new(json.name, img, json.level, json.progress, json.elementType)
+		tinymon = Tinymon_data.new(json.id, json.name, img, json.level, json.progress, json.elementType)
 		return tinymon
 	
-	return Tinymon_data.new("enemy", Image.load_from_file("res://assets/img/tinymon.png"))
+	return Tinymon_data.new("00000000-0000-0000-0000-000000000000", "enemy", Image.load_from_file("res://assets/img/tinymon.png"))
 
 func fight(tinymon1: Tinymon_data, type: FIGHT_TYPE, tinymon2: Tinymon_data) -> WINNING_TYPE:
 	var enemy_type = rng.randi_range(0, 2) as FIGHT_TYPE

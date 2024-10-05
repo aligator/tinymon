@@ -14,5 +14,5 @@ func _process(delta: float) -> void:
 	disabled = !nameEdit.text
 	
 func _on_pressed() -> void:
-	await Global.new_tinymon(Tinymon_data.new(nameEdit.text, canvas.texture.get_image()))
+	await Global.new_tinymon(Tinymon_data.new("00000000-0000-0000-0000-000000000000", nameEdit.text, canvas.texture.get_image()))
 	get_tree().change_scene_to_file("res://views/game.tscn")

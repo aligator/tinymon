@@ -40,11 +40,11 @@ public class TinymonController : ControllerBase
         return Ok(createdTinymon.Entity);
     }
 
-    [HttpGet("enemy", Name = "GetEnemy")]
-    public async Task<ActionResult<Entities.Tinymon>> GetAnyEnemy([FromQuery] int level)
+    [HttpGet("{id}/enemy", Name = "GetEnemy")]
+    public async Task<ActionResult<Entities.Tinymon>> GetAnyEnemy(Guid id, [FromQuery] int level)
     {
         var rand = new Random((int)DateTime.Now.Ticks);
-        var anyEnemy = await _context.Tinymons.Where(t => t.Level == level).OrderBy(e => EF.Functions.Random()).FirstOrDefaultAsync();
+        var anyEnemy = await _context.Tinymons.Where(t => t.Level == level).Where(t => !t.Id.Equals(id)).OrderBy(e => EF.Functions.Random()).FirstOrDefaultAsync();
         
         if (anyEnemy is null)
         {
