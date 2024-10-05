@@ -1,4 +1,3 @@
 extends Node
 
-var tinymon_name: String = ""
-var tinymon
+var tinymon: Tinymon_data = Tinymon_data.new()

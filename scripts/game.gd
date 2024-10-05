@@ -1,17 +1,16 @@
-extends ColorPickerButton
+extends Node2D
 
+@export 
+var tinymon_data: Tinymon_data = Tinymon_data.new()
+
+@onready
+var tinymon: Tinymon = %Tinymon
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
+	tinymon.set_data(Global.tinymon)
+	tinymon.position = get_viewport_rect().size / 2
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-
-
-func _on_color_changed(color: Color) -> void:
-	var img = Image.new()
-	img.fill(color)
-	set_button_icon(ImageTexture.create_from_image(img))

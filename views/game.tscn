@@ -1,3 +1,20 @@
-[gd_scene format=3 uid="uid://cun0exjmlym3j"]
+[gd_scene load_steps=5 format=3 uid="uid://cun0exjmlym3j"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_23j03"]
+[ext_resource type="PackedScene" uid="uid://cdhlvfj5ww50c" path="res://prefabs/tinymon/Tinymon.tscn" id="2_if7u3"]
+[ext_resource type="Script" path="res://scripts/character.gd" id="2_jhyrg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pamqk"]
+size = Vector2(32, 32)
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_23j03")
+
+[node name="Character" type="CharacterBody2D" parent="."]
+script = ExtResource("2_jhyrg")
+
+[node name="Tinymon" parent="Character" instance=ExtResource("2_if7u3")]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+shape = SubResource("RectangleShape2D_pamqk")
