@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 
 func set_data(tinymon_data: Tinymon_data) -> void:
 	self.tinymon = tinymon_data
-	if self.tinymon.image:
+	if !self.tinymon.image.is_empty():
 		sprite.texture = ImageTexture.create_from_image(self.tinymon.image)
 	self.tinymon
 	

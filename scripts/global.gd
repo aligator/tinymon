@@ -2,7 +2,8 @@ extends Node
 
 @export var http: AwaitableHTTPRequest
 
-var server: String = "http://localhost:5119"
+var server: String = "http://aligator.dev:5119"
+#var server: String = "http://localhost:5119"
 
 var rng = RandomNumberGenerator.new()
 
@@ -93,7 +94,7 @@ func start_fight(attacker: Tinymon_data, defender: Tinymon_data) -> Fight_stats:
 	assert("error start fight")
 	return
 
-func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -> Fight_result:
+func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -> Fight_result:	
 	# Call api
 	var data_to_send = {
 	  "attack": type,
