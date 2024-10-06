@@ -14,20 +14,22 @@ var enemies: Array[Enemy] = []
 func _ready() -> void:
 	Global.remove_enemy.connect(on_remove_enemy)
 	tinymon.set_data(Global.tinymon)
-	spawn_enemy(true)
+	await spawn_enemy(true)
+	await spawn_enemy(true)
+	await spawn_enemy(true)
+	await spawn_enemy(true)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 	
 func on_remove_enemy(to_be_removed: Tinymon_data):
-	print("remove")
 	for i in len(enemies):
 		var enemy = enemies[i]
 		if enemy.tinymon.tinymon.tinymon_name == to_be_removed.tinymon_name:
 			enemies.pop_at(i)
 			enemy.queue_free()
-			spawn_enemy(true)
+			await spawn_enemy(true)
 			break	
 
 func spawn_enemy(in_screen: bool = false):
