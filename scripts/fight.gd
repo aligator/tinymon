@@ -63,7 +63,8 @@ func _process(delta: float) -> void:
 		%Meteor.disabled = false
 		
 	elif state == STATE.ATTACKER:
-		if attacker_timer.is_stopped():			
+		if attacker_timer.is_stopped():
+			print("new stats1: ", fight_result.hpAttacker, " ", fight_result.hpDefender)	
 			fight_stats.hpAttacker = fight_result.hpAttacker
 			fight_stats.hpDefender = fight_result.hpDefender
 			
@@ -74,6 +75,7 @@ func _process(delta: float) -> void:
 
 	elif state == STATE.DEFENDER:
 		if defender_timer.is_stopped():
+			print("new stats2: ", fight_result.hpAttacker2, " ", fight_result.hpDefender2)	
 			fight_stats.hpAttacker = fight_result.hpAttacker2
 			fight_stats.hpDefender = fight_result.hpDefender2
 			action_label.text =  "<< " + get_attack_name(fight_result.defender_attack_type)
@@ -83,8 +85,6 @@ func _process(delta: float) -> void:
 
 	elif state == STATE.DONE:
 		action_label.text = ""
-		fight_stats.hpAttacker = fight_result.hpAttacker2
-		fight_stats.hpDefender = fight_result.hpDefender2
 		
 		if fight_stats.hpAttacker <= 0 || fight_stats.hpDefender <= 0:
 			visible = false
@@ -96,7 +96,6 @@ func _process(delta: float) -> void:
 		state = STATE.IDLE
 	
 func _on_pressed(type: Global.FIGHT_TYPE) -> void:
-	state = STATE.ATTACKER
 	%Tackle.disabled = true
 	%Firestorm.disabled = true
 	%Fireball.disabled = true
@@ -106,7 +105,7 @@ func _on_pressed(type: Global.FIGHT_TYPE) -> void:
 	%Meteor.disabled = true
 	
 	fight_result = await Global.fight(tinymon1, type, fight_stats)
-	
+	state = STATE.ATTACKER
 	
 func _on_tackle_pressed() -> void:
 	_on_pressed(Global.FIGHT_TYPE.TACKLE)

@@ -117,6 +117,13 @@ func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -
 
 		new_data.emit(tinymon)
 		
+		print(
+			json.fight.hpAttacker, " ",
+			json.fight.hpDefender, " ",
+			json.fightBack.hpAttacker, " ",
+			json.fightBack.hpDefender,
+		)
+		
 		var fight_result: Fight_result = Fight_result.new(
 			json.fight.id,
 			json.fight.hpAttacker,
