@@ -67,6 +67,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Name"
 
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+layout_mode = 2
+
 [node name="Play" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 text = "Play!"
