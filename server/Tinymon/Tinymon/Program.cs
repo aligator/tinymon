@@ -13,6 +13,7 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("https://ldjam.com", "https://itch.io", "https://a1igat0r.itch.io",
                 "https://html-classic.itch.zone",
                 "http://localhost:5119");
+            policy.WithHeaders("*");
         });
 });
 
