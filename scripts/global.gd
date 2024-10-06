@@ -2,7 +2,8 @@ extends Node
 
 @export var http: AwaitableHTTPRequest
 
-var server: String = "http://aligator.dev:5119"
+#var server: String = "http://aligator.dev:5119"
+var server: String = "https://tinymon.aligator.dev"
 #var server: String = "http://localhost:5119"
 
 var rng = RandomNumberGenerator.new()
@@ -83,8 +84,9 @@ func start_fight(attacker: Tinymon_data, defender: Tinymon_data) -> Fight_stats:
 		server + "/Tinymon/" + attacker.id + "/enemy/" + defender.id + "/fight", 
 		PackedStringArray([
 			"content-type: application/json",
-		]), 
+		]),
 		HTTPClient.Method.METHOD_POST, 
+		"{}" # Fake body - nginx seems to filter the request otherwise...
 	)
 	if resp.success():
 		var json = resp.body_as_json()

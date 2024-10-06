@@ -87,6 +87,24 @@ public class TinymonController : ControllerBase
         {
             attacker.Level += 1;
             attacker.Progress += attacker.Level * 100;
+
+            var withSameLevel = await _context.Tinymons.Where(t =>
+                t.Level == attacker.Level).Where(t => !t.Id.Equals(attacker.Id)).FirstOrDefaultAsync();
+
+            if (withSameLevel is null)
+            {
+                _context.Tinymons.Add(new Entities.Tinymon
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Enemy",
+                    Level = attacker.Level,
+                    Progress = attacker.Level * 100,
+                    Image =
+                        "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAnFJREFUeJztmj9rFEEYh5/Nv0IiXJEUSZN0gTQKFnYpxD524lcIIR9GxO+QLvkCKewsBLUQRAgK4hUJGERCNJC1SMbbnezuvHOzc3M6769Zbm7nvbn5PfPuzM6AKm8VsQI/fLEnvbW8uRYAr3efd9Y33/elmV6j/YOa860gdXZl+QsAw5O1slq+eOesALi6mgXg/OIuAEuDIQA7R/cB+HZyq34UWpWAgLplU6FxeH7uFwAPNl8B8ObDFgA/zwdlU/na6qdavNURQcCIkGcHjwH4/mO5djXyzRFKQEBde0yWMHJ4Y/197Uvbcbvcln2fTcjx101Xe0TKnoDgzPpkfxuAy8sFAE7PVmpOtTk8rmwylgbD65wz/xuAg6eHXvGUgHErmud1RTXnjVN9E9Chzv/y8tHbxnIlwLeCy/kpVO0/2iQoAdIbfZ2/t7Fe+/zu42fpT8VSIwnZE+CcCYY6b5ePS0JbXI94javK7AlozQF9Od8mqXPSuB4kFKA54K8kq8Ekz3lfosbNMdkToB2QugGp1ZUDvMa+GXuusds2Ru0xLI3niuuSEtB3wDbnXM7bn6UkhK4xlIBYgfte/cVaTWZPQI4dUFJ5wuXYATVpB6RuQGp1dUBBxBMk06LsCYg2D5DKnulN+u2xEpC6AUap9g2UgNQNSCDdF6hK0gH/9XwgewJac4DZOWnYIQqS9HkfYV7QSHH2BDjHdoWAoB0i350eWwEk6AmRLk1sHuD7nr9v6SmxFvkQYMZSUC6Y1I6PVNkTEO2UmFQR3wN0Zn8jJcC3QsfMcFpOjIqcN1ICQgN4rBX6IkTUZpfzRtkToFKp8tYfzpzQNeVLQ1QAAAAASUVORK5CYII=",
+                    ElementType = (ElementType)_randomRobert.Next(0, 2)
+                });
+                await _context.SaveChangesAsync();
+            }
         }
 
         await _context.SaveChangesAsync();
@@ -161,7 +179,7 @@ public class TinymonController : ControllerBase
                 Progress = level * 100,
                 Image =
                     "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAnFJREFUeJztmj9rFEEYh5/Nv0IiXJEUSZN0gTQKFnYpxD524lcIIR9GxO+QLvkCKewsBLUQRAgK4hUJGERCNJC1SMbbnezuvHOzc3M6769Zbm7nvbn5PfPuzM6AKm8VsQI/fLEnvbW8uRYAr3efd9Y33/elmV6j/YOa860gdXZl+QsAw5O1slq+eOesALi6mgXg/OIuAEuDIQA7R/cB+HZyq34UWpWAgLplU6FxeH7uFwAPNl8B8ObDFgA/zwdlU/na6qdavNURQcCIkGcHjwH4/mO5djXyzRFKQEBde0yWMHJ4Y/197Uvbcbvcln2fTcjx101Xe0TKnoDgzPpkfxuAy8sFAE7PVmpOtTk8rmwylgbD65wz/xuAg6eHXvGUgHErmud1RTXnjVN9E9Chzv/y8tHbxnIlwLeCy/kpVO0/2iQoAdIbfZ2/t7Fe+/zu42fpT8VSIwnZE+CcCYY6b5ePS0JbXI94javK7AlozQF9Od8mqXPSuB4kFKA54K8kq8Ekz3lfosbNMdkToB2QugGp1ZUDvMa+GXuusds2Ru0xLI3niuuSEtB3wDbnXM7bn6UkhK4xlIBYgfte/cVaTWZPQI4dUFJ5wuXYATVpB6RuQGp1dUBBxBMk06LsCYg2D5DKnulN+u2xEpC6AUap9g2UgNQNSCDdF6hK0gH/9XwgewJac4DZOWnYIQqS9HkfYV7QSHH2BDjHdoWAoB0i350eWwEk6AmRLk1sHuD7nr9v6SmxFvkQYMZSUC6Y1I6PVNkTEO2UmFQR3wN0Zn8jJcC3QsfMcFpOjIqcN1ICQgN4rBX6IkTUZpfzRtkToFKp8tYfzpzQNeVLQ1QAAAAASUVORK5CYII=",
-                ElementType = ElementType.Fire
+                ElementType = (ElementType)_randomRobert.Next(0, 2)
             }).Entity;
             await _context.SaveChangesAsync();
         }
@@ -218,7 +236,7 @@ public class TinymonController : ControllerBase
         var levelDiff = fight.Attacker.Level - fight.Defender.Level;
 
 
-        fight.HpAttacker -= fightResult.AttackerDamage * 10 - 5 * -levelDiff;
+        fight.HpAttacker -= fightResult.AttackerDamage * 10;
         fight.HpDefender -= fightResult.DefenderDamage * 10 - 5 * levelDiff;
         await _context.SaveChangesAsync();
 
@@ -268,7 +286,7 @@ public class TinymonController : ControllerBase
         // level-diff
         var levelBackDiff = fightBack.Defender.Level - fightBack.Attacker.Level;
 
-        fightBack.HpDefender -= fightBackResult.AttackerDamage * 10 - 5 * -levelBackDiff;
+        fightBack.HpDefender -= fightBackResult.AttackerDamage * 10;
         fightBack.HpAttacker -= fightBackResult.DefenderDamage * 10 - 5 * levelBackDiff;
         await _context.SaveChangesAsync();
 
