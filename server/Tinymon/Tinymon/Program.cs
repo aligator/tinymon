@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        policy => { policy.WithOrigins("https://tinymon.aligator.dev", "http://localhost:5119"); });
+        policy => { policy.WithOrigins("https://ldjam.com", "https://itch.io", "http://localhost:5119"); });
 });
 
 builder.Services.AddControllers();
