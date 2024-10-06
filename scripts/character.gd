@@ -4,6 +4,8 @@ extends CharacterBody2D
 
 @onready 
 var fight_screen: CanvasLayer = %Fight
+@onready 
+var copy_code_screen: CanvasLayer = %CopyCode
 
 func get_input():
 	var input_direction = Input.get_vector("left", "right", "up", "down")
@@ -11,6 +13,8 @@ func get_input():
 
 func _physics_process(delta: float) -> void:
 	if fight_screen.visible: 
+		return
+	if copy_code_screen.visible: 
 		return
 		
 	get_input()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cun0exjmlym3j"]
+[gd_scene load_steps=13 format=3 uid="uid://cun0exjmlym3j"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_23j03"]
 [ext_resource type="PackedScene" uid="uid://cdhlvfj5ww50c" path="res://prefabs/tinymon/Tinymon.tscn" id="2_if7u3"]
@@ -42,6 +42,61 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if fight.fight_stats:
 		text = \"Enemy \" + str(fight.fight_stats.hpDefender) + \" HP\"
+"
+
+[sub_resource type="GDScript" id="GDScript_l7pcp"]
+script/source = "extends LineEdit
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	text = Global.tinymon.id
+	if Global.code_used:
+		%CopyCode.hide()
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_jy61t"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_pressed() -> void:
+	# Get the current contents of the clipboard
+	var current_clipboard = DisplayServer.clipboard_get()
+	# Set the contents of the clipboard
+	DisplayServer.clipboard_set(%Tinymon.tinymon.id)
+"
+
+[sub_resource type="GDScript" id="GDScript_lif3a"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_pressed() -> void:
+	%CopyCode.hide()
 "
 
 [node name="Game" type="Node2D"]
@@ -93,11 +148,13 @@ size_flags_horizontal = 4
 
 [node name="AttackerHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "1 HP"
 script = SubResource("GDScript_5vy2b")
 
 [node name="DefenderHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "1 HP"
 script = SubResource("GDScript_7euwr")
 
@@ -163,6 +220,50 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 script = ExtResource("5_ujiaw")
 
+[node name="CopyCode" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="Panel" type="Panel" parent="CopyCode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CopyCode/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.5
+offset_top = -46.5
+offset_right = 245.5
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CopyCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Copy the code to continue playing later with the same creature:"
+
+[node name="LineEdit" type="LineEdit" parent="CopyCode/Panel/VBoxContainer"]
+layout_mode = 2
+script = SubResource("GDScript_l7pcp")
+
+[node name="Copy" type="Button" parent="CopyCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Copy to clipboard"
+script = SubResource("GDScript_jy61t")
+
+[node name="Play" type="Button" parent="CopyCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Play!"
+script = SubResource("GDScript_lif3a")
+
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Tackle" to="Fight" method="_on_tackle_pressed"]
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Firestorm" to="Fight" method="_on_firestorm_pressed"]
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Fireball" to="Fight" method="_on_fireball_pressed"]
@@ -170,3 +271,5 @@ script = ExtResource("5_ujiaw")
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Splash" to="Fight" method="_on_splash_pressed"]
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Earthquake" to="Fight" method="_on_earthquake_pressed"]
 [connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Meteor" to="Fight" method="_on_meteor_pressed"]
+[connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Copy" to="CopyCode/Panel/VBoxContainer/Copy" method="_on_pressed"]
+[connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Play" to="CopyCode/Panel/VBoxContainer/Play" method="_on_pressed"]

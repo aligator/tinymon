@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3ocg4ore5r75"]
+[gd_scene load_steps=7 format=3 uid="uid://c3ocg4ore5r75"]
 
 [ext_resource type="Script" path="res://scripts/color_picker_button.gd" id="1_0nvrx"]
 [ext_resource type="Script" path="res://scripts/editor.gd" id="2_jc87y"]
@@ -18,11 +18,51 @@ func _process(delta: float) -> void:
 	pass
 "
 
+[sub_resource type="GDScript" id="GDScript_gw0nq"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	disabled = %Code.text == \"\"
+
+
+func _on_pressed() -> void:
+	await Global.load_tinymon(%Code.text)
+	get_tree().change_scene_to_file(\"res://views/game.tscn\")
+"
+
+[sub_resource type="GDScript" id="GDScript_5xl8i"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_pressed() -> void:
+	%PasteCode.hide()
+	%CreateCreature.show()
+"
+
 [node name="TinymonEditor" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CreateCreature" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CreateCreature"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,26 +71,26 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="CreateCreature/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer"]
+[node name="ColorLabel" type="Label" parent="CreateCreature/VBoxContainer/HFlowContainer"]
 layout_mode = 2
 text = "Color:"
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/VBoxContainer/HFlowContainer"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="CreateCreature/VBoxContainer/HFlowContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 script = ExtResource("1_0nvrx")
 
-[node name="Canvas" type="TextureRect" parent="CanvasLayer/VBoxContainer"]
+[node name="Canvas" type="TextureRect" parent="CreateCreature/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 stretch_mode = 3
 script = ExtResource("2_jc87y")
 
-[node name="Background" type="ColorRect" parent="CanvasLayer/VBoxContainer/Canvas"]
+[node name="Background" type="ColorRect" parent="CreateCreature/VBoxContainer/Canvas"]
 z_index = -1
 layout_mode = 1
 anchors_preset = 8
@@ -67,15 +107,15 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="HFlowContainer2" type="HFlowContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="HFlowContainer2" type="HFlowContainer" parent="CreateCreature/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ElementLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+[node name="ElementLabel" type="Label" parent="CreateCreature/VBoxContainer/HFlowContainer2"]
 layout_mode = 2
 text = "Element: "
 
-[node name="ElementSelect" type="OptionButton" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+[node name="ElementSelect" type="OptionButton" parent="CreateCreature/VBoxContainer/HFlowContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -87,22 +127,68 @@ popup/item_2/text = "Earth"
 popup/item_2/id = 2
 script = SubResource("GDScript_dr05k")
 
-[node name="NameLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+[node name="NameLabel" type="Label" parent="CreateCreature/VBoxContainer/HFlowContainer2"]
 layout_mode = 2
 text = "Creature Name:"
 
-[node name="NameEdit" type="LineEdit" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+[node name="NameEdit" type="LineEdit" parent="CreateCreature/VBoxContainer/HFlowContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Name"
 
-[node name="Play" type="Button" parent="CanvasLayer/VBoxContainer"]
+[node name="Play" type="Button" parent="CreateCreature/VBoxContainer"]
 layout_mode = 2
 text = "Play!"
 script = ExtResource("3_4jj25")
 
-[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" method="_on_color_changed"]
-[connection signal="color_changed" from="CanvasLayer/VBoxContainer/HFlowContainer/ColorPickerButton" to="CanvasLayer/VBoxContainer/Canvas" method="_on_color_picker_button_color_changed"]
-[connection signal="gui_input" from="CanvasLayer/VBoxContainer/Canvas/Background" to="CanvasLayer/VBoxContainer/Canvas" method="_gui_input"]
-[connection signal="pressed" from="CanvasLayer/VBoxContainer/Play" to="CanvasLayer/VBoxContainer/Play" method="_on_pressed"]
+[node name="PasteCode" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="Panel" type="Panel" parent="PasteCode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PasteCode/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.5
+offset_top = -46.5
+offset_right = 245.5
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PasteCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Paste your code to continue playing:"
+
+[node name="Code" type="LineEdit" parent="PasteCode/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="PasteCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Continue with code"
+script = SubResource("GDScript_gw0nq")
+
+[node name="Play" type="Button" parent="PasteCode/Panel/VBoxContainer"]
+layout_mode = 2
+text = "New Creature"
+script = SubResource("GDScript_5xl8i")
+
+[connection signal="color_changed" from="CreateCreature/VBoxContainer/HFlowContainer/ColorPickerButton" to="CreateCreature/VBoxContainer/HFlowContainer/ColorPickerButton" method="_on_color_changed"]
+[connection signal="color_changed" from="CreateCreature/VBoxContainer/HFlowContainer/ColorPickerButton" to="CreateCreature/VBoxContainer/Canvas" method="_on_color_picker_button_color_changed"]
+[connection signal="gui_input" from="CreateCreature/VBoxContainer/Canvas/Background" to="CreateCreature/VBoxContainer/Canvas" method="_gui_input"]
+[connection signal="pressed" from="CreateCreature/VBoxContainer/Play" to="CreateCreature/VBoxContainer/Play" method="_on_pressed"]
+[connection signal="pressed" from="PasteCode/Panel/VBoxContainer/Continue" to="PasteCode/Panel/VBoxContainer/Continue" method="_on_pressed"]
+[connection signal="pressed" from="PasteCode/Panel/VBoxContainer/Play" to="PasteCode/Panel/VBoxContainer/Play" method="_on_pressed"]

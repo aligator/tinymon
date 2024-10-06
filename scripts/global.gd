@@ -8,12 +8,31 @@ var rng = RandomNumberGenerator.new()
 
 var tinymon: Tinymon_data = Tinymon_data.new()
 
+var code_used: bool = false
+
 enum FIGHT_TYPE {TACKLE, FIRESTORM, FIREBALL, FLOOD, SPLASH, EARTHQUAKE, METEOR}
 enum WINNING_TYPE {LOOSER, DRAW, WINNER}
 
 signal new_data
 signal remove_enemy
 
+func load_tinymon(code: String):
+	# Call api
+	var resp := await http.async_request(
+		server + "/Tinymon/" + code, 
+		PackedStringArray([
+			"content-type: application/json",
+		]), 
+		HTTPClient.Method.METHOD_GET, 
+	)
+	if resp.success():
+		var json = resp.body_as_json()
+		var img = Image.new()
+		#'image' is the resulted base64 string from the API
+		img.load_png_from_buffer(Marshalls.base64_to_raw(json.image))
+		tinymon = Tinymon_data.new(json.id, json.name, img, json.level, json.progress, json.elementType)
+		code_used = true
+	
 func new_tinymon(tinymon_data: Tinymon_data):
 	tinymon_data.image.resize(64, 64)
 

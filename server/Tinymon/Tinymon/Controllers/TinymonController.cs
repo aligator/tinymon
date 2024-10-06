@@ -132,6 +132,17 @@ public class TinymonController : ControllerBase
         return Ok(createdTinymon.Entity);
     }
 
+    [HttpGet("{id}", Name = "GetTinymon")]
+    public async Task<ActionResult<Entities.Tinymon>> GetTinymon(Guid id)
+    {
+        var tinymon = await _context.Tinymons.FindAsync(id);
+
+        if (tinymon is null)
+            return NotFound();
+
+        return Ok(tinymon);
+    }
+
     [HttpGet("{id}/enemy", Name = "GetEnemy")]
     public async Task<ActionResult<Entities.Tinymon>> GetAnyEnemy(Guid id, [FromQuery] int level)
     {
