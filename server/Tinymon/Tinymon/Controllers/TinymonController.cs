@@ -37,17 +37,17 @@ public class TinymonController : ControllerBase
 
             // Attack1 
             // Firestorm
-            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Firestorm), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Firestorm), new FightResult(0, 2) },
             { new FightCombination(ElementType.Fire, ElementType.Earth, AttackType.Firestorm), new FightResult(0, 3) },
             { new FightCombination(ElementType.Fire, ElementType.Fire, AttackType.Firestorm), new FightResult(1, 1) },
 
             // Flood
             { new FightCombination(ElementType.Water, ElementType.Fire, AttackType.Flood), new FightResult(0, 3) },
-            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Flood), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Flood), new FightResult(0, 2) },
             { new FightCombination(ElementType.Water, ElementType.Water, AttackType.Flood), new FightResult(1, 1) },
 
             // Earthshake
-            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Earthquake), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Earthquake), new FightResult(0, 2) },
             {
                 new FightCombination(ElementType.Earth, ElementType.Water, AttackType.Earthquake), new FightResult(0, 3)
             },
@@ -73,6 +73,25 @@ public class TinymonController : ControllerBase
             },
             { new FightCombination(ElementType.Earth, ElementType.Earth, AttackType.Meteor), new FightResult(0, 0) }
         };
+    }
+
+    private async Task<Entities.Tinymon?> _won(Guid attackerId, int modifier)
+    {
+        var attacker = await _context.Tinymons.FindAsync(attackerId);
+
+        if (attacker is null) return null;
+
+
+        attacker.Progress -= 10 + modifier * 5;
+        if (attacker.Progress <= 0)
+        {
+            attacker.Level += 1;
+            attacker.Progress += attacker.Level * 100;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return attacker;
     }
 
     private AttackType _randomAttack(ElementType elementType)
@@ -117,9 +136,8 @@ public class TinymonController : ControllerBase
     public async Task<ActionResult<Entities.Tinymon>> GetAnyEnemy(Guid id, [FromQuery] int level)
     {
         var anyEnemy = await _context.Tinymons.Where(t =>
-                t.Level == level - 1 ||
-                t.Level == level ||
-                t.Level == level + 1).Where(t => !t.Id.Equals(id)).OrderBy(e => EF.Functions.Random())
+                t.Level >= level - 3 ||
+                t.Level <= level + 2).Where(t => !t.Id.Equals(id)).OrderBy(e => EF.Functions.Random())
             .FirstOrDefaultAsync();
 
         if (anyEnemy is null)
@@ -207,6 +225,25 @@ public class TinymonController : ControllerBase
             .Include(f => f.Defender).FirstOrDefaultAsync();
         if (fightBack is null) return NotFound();
 
+        if (fightBack.HpDefender <= 0 || fightBack.HpAttacker <= 0)
+        {
+            if (fightBack.HpDefender <= 0)
+            {
+                var updatedAttacker = await _won(attackerId, levelDiff);
+                if (updatedAttacker is not null)
+                {
+                    fight.Attacker = updatedAttacker;
+                    fightBack.Attacker = updatedAttacker;
+                }
+            }
+
+            return Ok(new FightResponse
+            {
+                Fight = fight,
+                FightBack = fightBack
+            });
+        }
+
         var fightBackAttack = _randomAttack(fightBack.Defender.ElementType);
         var combiBack = new FightCombination(fightBack.Defender.ElementType, fightBack.Attacker.ElementType,
             fightBackAttack);
@@ -219,11 +256,14 @@ public class TinymonController : ControllerBase
 
         fightBack.HpDefender -= fightBackResult.AttackerDamage * 10 - 5 * -levelBackDiff;
         fightBack.HpAttacker -= fightBackResult.DefenderDamage * 10 - 5 * levelBackDiff;
-
-
-        _logger.LogInformation(fightBack.ToString());
         await _context.SaveChangesAsync();
-        _logger.LogInformation(fightBack.ToString());
+
+        if (fightBack.HpDefender <= 0)
+        {
+            var updatedAttacker = await _won(attackerId, levelDiff);
+            if (updatedAttacker is not null) fightBack.Attacker = updatedAttacker;
+        }
+
 
         return Ok(new FightResponse
         {

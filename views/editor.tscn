@@ -1,8 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3ocg4ore5r75"]
+[gd_scene load_steps=5 format=3 uid="uid://c3ocg4ore5r75"]
 
 [ext_resource type="Script" path="res://scripts/color_picker_button.gd" id="1_0nvrx"]
 [ext_resource type="Script" path="res://scripts/editor.gd" id="2_jc87y"]
 [ext_resource type="Script" path="res://scripts/play.gd" id="3_4jj25"]
+
+[sub_resource type="GDScript" id="GDScript_dr05k"]
+script/source = "extends OptionButton
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	select(randi_range(0, 2))
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
 
 [node name="TinymonEditor" type="Node2D"]
 
@@ -71,6 +85,7 @@ popup/item_1/text = "Water"
 popup/item_1/id = 1
 popup/item_2/text = "Earth"
 popup/item_2/id = 2
+script = SubResource("GDScript_dr05k")
 
 [node name="NameLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
 layout_mode = 2

@@ -53,8 +53,8 @@ func new_enemy() -> Tinymon_data:
 		var img = Image.new()
 		#'image' is the resulted base64 string from the API
 		img.load_png_from_buffer(Marshalls.base64_to_raw(json.image))
-		tinymon = Tinymon_data.new(json.id, json.name, img, json.level, json.progress, json.elementType)
-		return tinymon
+		var enemy = Tinymon_data.new(json.id, json.name, img, json.level, json.progress, json.elementType)
+		return enemy
 	
 	return Tinymon_data.new("00000000-0000-0000-0000-000000000000", "enemy", Image.load_from_file("res://assets/img/tinymon.png"))
 
@@ -95,9 +95,11 @@ func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -
 		fight_stats.hpAttacker = json.fightBack.hpAttacker
 		fight_stats.hpDefender = json.fightBack.hpDefender
 		
-		attacker.level = json.fightBack.attacker.level
-		attacker.progress = json.fightBack.attacker.progress
-		new_data.emit(attacker)
+		#'image' is the resulted base64 string from the API
+		tinymon.level = json.fightBack.attacker.level
+		tinymon.progress = json.fightBack.attacker.progress
+
+		new_data.emit(tinymon)
 		
 		if fight_stats.hpAttacker == 0 && fight_stats.hpDefender:
 			return WINNING_TYPE.DRAW

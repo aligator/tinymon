@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdhlvfj5ww50c"]
+[gd_scene load_steps=5 format=3 uid="uid://cdhlvfj5ww50c"]
 
 [ext_resource type="Script" path="res://prefabs/tinymon/tinymon.gd" id="1_hibst"]
 [ext_resource type="Texture2D" uid="uid://ccocwoffu7u5o" path="res://assets/img/tinymon.png" id="2_sh01j"]
@@ -23,6 +23,22 @@ func _process(delta: float) -> void:
 	else:
 		text = \"Unknown\"
 	
+	text = \"Level: \" + str(get_parent().tinymon.level) + \" - \" + text
+	
+"
+
+[sub_resource type="GDScript" id="GDScript_vj815"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	text = get_parent().tinymon.tinymon_name
 "
 
 [node name="Tinymon" type="Node2D"]
@@ -63,4 +79,4 @@ grow_vertical = 2
 size_flags_horizontal = 4
 text = "Name"
 horizontal_alignment = 1
-script = SubResource("GDScript_kc5hh")
+script = SubResource("GDScript_vj815")
