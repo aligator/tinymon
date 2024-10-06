@@ -17,9 +17,18 @@ var defender_timer: Timer = %DefenderTimer
 @onready
 var action_label: Label = %Action
 
+@onready
+var attacker: Tinymon = %Attacker
+
+@onready
+var defender: Tinymon = %Defender
+
+@onready
+var explosion_scene = preload("res://prefabs/explosion/Explosion.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	hide()
 
 func get_attack_name(attack_type: Global.FIGHT_TYPE) -> String:
 	if attack_type == Global.FIGHT_TYPE.TACKLE:
@@ -60,6 +69,7 @@ func _process(delta: float) -> void:
 			
 			action_label.text = get_attack_name(fight_result.attacker_attack_type) + " >>"
 			
+			defender.add_child(explosion_scene.instantiate())
 			attacker_timer.start()
 
 	elif state == STATE.DEFENDER:
@@ -67,6 +77,8 @@ func _process(delta: float) -> void:
 			fight_stats.hpAttacker = fight_result.hpAttacker2
 			fight_stats.hpDefender = fight_result.hpDefender2
 			action_label.text =  "<< " + get_attack_name(fight_result.defender_attack_type)
+			
+			attacker.add_child(explosion_scene.instantiate())
 			defender_timer.start()
 
 	elif state == STATE.DONE:
@@ -84,6 +96,7 @@ func _process(delta: float) -> void:
 		state = STATE.IDLE
 	
 func _on_pressed(type: Global.FIGHT_TYPE) -> void:
+	state = STATE.ATTACKER
 	%Tackle.disabled = true
 	%Firestorm.disabled = true
 	%Fireball.disabled = true
@@ -93,7 +106,7 @@ func _on_pressed(type: Global.FIGHT_TYPE) -> void:
 	%Meteor.disabled = true
 	
 	fight_result = await Global.fight(tinymon1, type, fight_stats)
-	state = STATE.ATTACKER
+	
 	
 func _on_tackle_pressed() -> void:
 	_on_pressed(Global.FIGHT_TYPE.TACKLE)

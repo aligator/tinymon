@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dt58sgmg6sknq"]
+
+[ext_resource type="Script" path="res://prefabs/explosion/Explosion.gd" id="1_iasss"]
+[ext_resource type="AudioStream" uid="uid://ceujt5f8iaddq" path="res://assets/audio/explosion.mp3" id="2_xwly0"]
+
+[sub_resource type="Gradient" id="Gradient_el0na"]
+offsets = PackedFloat32Array(0.0296296, 0.259259, 0.451852, 0.955556)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 0, 1, 1, 0.607143, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6xn0n"]
+gradient = SubResource("Gradient_el0na")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k24fj"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 14.84
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_6xn0n")
+
+[node name="Explosion" type="GPUParticles2D"]
+z_index = 100
+emitting = false
+amount = 256
+process_material = SubResource("ParticleProcessMaterial_k24fj")
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+script = ExtResource("1_iasss")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_xwly0")
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

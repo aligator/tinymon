@@ -128,7 +128,6 @@ texture = SubResource("CompressedTexture2D_cod36")
 
 [node name="Fight" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
-visible = false
 script = ExtResource("4_swpe7")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Fight"]
