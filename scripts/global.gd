@@ -11,7 +11,6 @@ var tinymon: Tinymon_data = Tinymon_data.new()
 var code_used: bool = false
 
 enum FIGHT_TYPE {TACKLE, FIRESTORM, FIREBALL, FLOOD, SPLASH, EARTHQUAKE, METEOR}
-enum WINNING_TYPE {LOOSER, DRAW, WINNER}
 
 signal new_data
 signal remove_enemy
@@ -94,7 +93,7 @@ func start_fight(attacker: Tinymon_data, defender: Tinymon_data) -> Fight_stats:
 	assert("error start fight")
 	return
 
-func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -> WINNING_TYPE:
+func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -> Fight_result:
 	# Call api
 	var data_to_send = {
 	  "attack": type,
@@ -111,23 +110,26 @@ func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -
 	)
 	if resp.success():
 		var json = resp.body_as_json()
-		fight_stats.hpAttacker = json.fightBack.hpAttacker
-		fight_stats.hpDefender = json.fightBack.hpDefender
 		
-		#'image' is the resulted base64 string from the API
 		tinymon.level = json.fightBack.attacker.level
 		tinymon.progress = json.fightBack.attacker.progress
 
 		new_data.emit(tinymon)
 		
-		if fight_stats.hpAttacker == 0 && fight_stats.hpDefender:
-			return WINNING_TYPE.DRAW
-		if fight_stats.hpAttacker <= 0:
-			return WINNING_TYPE.LOOSER
-		if fight_stats.hpDefender <= 0:
-			return WINNING_TYPE.WINNER
-	
-	return WINNING_TYPE.DRAW
+		var fight_result: Fight_result = Fight_result.new(
+			json.fight.id,
+			json.fight.hpAttacker,
+			json.fight.hpDefender,
+			json.fightBack.hpAttacker,
+			json.fightBack.hpDefender,
+			type,
+			json.fightBackAttack,
+			json.fight.hpAttacker > 0 && json.fight.hpDefender > 0
+		)
+		return fight_result
+		
+	assert("api call should work")
+	return
 				
 func fight_done(enemy: Tinymon_data):
 	remove_enemy.emit(enemy)

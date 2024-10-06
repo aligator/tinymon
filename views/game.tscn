@@ -203,6 +203,22 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Meteor"
 
+[node name="Action" type="Label" parent="Fight/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+
 [node name="Control" type="Control" parent="Fight/Panel"]
 layout_mode = 1
 anchors_preset = 4
@@ -262,13 +278,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -184.0
 offset_top = 74.0
-offset_right = -154.0
+offset_right = -114.0
 offset_bottom = 119.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
 text = "1 HP"
 script = SubResource("GDScript_7euwr")
+
+[node name="AttackerTimer" type="Timer" parent="Fight"]
+unique_name_in_owner = true
+process_callback = 0
+one_shot = true
+
+[node name="DefenderTimer" type="Timer" parent="Fight"]
+unique_name_in_owner = true
+process_callback = 0
+one_shot = true
 
 [node name="Stats" type="CanvasLayer" parent="."]
 
@@ -337,5 +363,7 @@ script = SubResource("GDScript_lif3a")
 [connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Splash" to="Fight" method="_on_splash_pressed"]
 [connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Earthquake" to="Fight" method="_on_earthquake_pressed"]
 [connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Meteor" to="Fight" method="_on_meteor_pressed"]
+[connection signal="timeout" from="Fight/AttackerTimer" to="Fight" method="_on_attacker_timer_timeout"]
+[connection signal="timeout" from="Fight/DefenderTimer" to="Fight" method="_on_defender_timer_timeout"]
 [connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Copy" to="CopyCode/Panel/VBoxContainer/Copy" method="_on_pressed"]
 [connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Play" to="CopyCode/Panel/VBoxContainer/Play" method="_on_pressed"]

@@ -18,8 +18,8 @@ func _process(delta: float) -> void:
 
 func set_data(tinymon_data: Tinymon_data) -> void:
 	self.tinymon = tinymon_data
-	
-	sprite.texture = ImageTexture.create_from_image(self.tinymon.image)
+	if self.tinymon.image:
+		sprite.texture = ImageTexture.create_from_image(self.tinymon.image)
 	self.tinymon
 	
 func on_new_data(tinymon: Tinymon_data):
