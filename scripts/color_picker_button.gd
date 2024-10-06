@@ -3,6 +3,8 @@ extends ColorPickerButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	color = Color(Global.rng.randf(), Global.rng.randf(), Global.rng.randf())
+	%Canvas.brush_color = color
 	pass # Replace with function body.
 
 
