@@ -79,6 +79,7 @@ func _on_pressed() -> void:
 	var current_clipboard = DisplayServer.clipboard_get()
 	# Set the contents of the clipboard
 	DisplayServer.clipboard_set(%Tinymon.tinymon.id)
+	%CopyCode.hide()
 "
 
 [sub_resource type="GDScript" id="GDScript_lif3a"]
@@ -130,79 +131,144 @@ unique_name_in_owner = true
 visible = false
 script = ExtResource("4_swpe7")
 
-[node name="CenterContainer" type="CenterContainer" parent="Fight"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Fight"]
+offset_right = 144.0
+offset_bottom = 45.0
+size_flags_horizontal = 4
+
+[node name="Panel" type="Panel" parent="Fight"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Fight/CenterContainer"]
-layout_mode = 2
+[node name="CenterContainer" type="CenterContainer" parent="Fight/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -848.0
+offset_top = -86.0
+offset_right = 848.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Fight/CenterContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="AttackerHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "1 HP"
-script = SubResource("GDScript_5vy2b")
-
-[node name="DefenderHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "1 HP"
-script = SubResource("GDScript_7euwr")
-
-[node name="VFlowContainer" type="VFlowContainer" parent="Fight/CenterContainer/VBoxContainer"]
+[node name="VFlowContainer" type="VFlowContainer" parent="Fight/Panel/CenterContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 24
 
-[node name="Tackle" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Tackle" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Tackle"
 
-[node name="Firestorm" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Firestorm" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Firestorm"
 
-[node name="Fireball" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Fireball" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Fireball"
 
-[node name="Flood" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Flood" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Flood"
 
-[node name="Splash" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Splash" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Splash"
 
-[node name="Earthquake" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Earthquake" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Earthquake"
 
-[node name="Meteor" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+[node name="Meteor" type="Button" parent="Fight/Panel/CenterContainer/VFlowContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
 text = "Meteor"
+
+[node name="Control" type="Control" parent="Fight/Panel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="Attacker" parent="Fight/Panel/Control" instance=ExtResource("2_if7u3")]
+unique_name_in_owner = true
+position = Vector2(194, 18)
+scale = Vector2(3, 3)
+metadata/_edit_pinned_properties_ = [&"scale"]
+
+[node name="AttackerHP" type="Label" parent="Fight/Panel/Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 166.0
+offset_top = 68.0
+offset_right = 196.0
+offset_bottom = 113.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "1 HP"
+script = SubResource("GDScript_5vy2b")
+
+[node name="Control2" type="Control" parent="Fight/Panel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Defender" parent="Fight/Panel/Control2" instance=ExtResource("2_if7u3")]
+unique_name_in_owner = true
+position = Vector2(-158, 18)
+scale = Vector2(3, 3)
+metadata/_edit_pinned_properties_ = [&"scale"]
+
+[node name="DefenderHP" type="Label" parent="Fight/Panel/Control2"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = 74.0
+offset_right = -154.0
+offset_bottom = 119.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "1 HP"
+script = SubResource("GDScript_7euwr")
 
 [node name="Stats" type="CanvasLayer" parent="."]
 
@@ -264,12 +330,12 @@ layout_mode = 2
 text = "Play!"
 script = SubResource("GDScript_lif3a")
 
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Tackle" to="Fight" method="_on_tackle_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Firestorm" to="Fight" method="_on_firestorm_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Fireball" to="Fight" method="_on_fireball_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Flood" to="Fight" method="_on_flood_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Splash" to="Fight" method="_on_splash_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Earthquake" to="Fight" method="_on_earthquake_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Meteor" to="Fight" method="_on_meteor_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Tackle" to="Fight" method="_on_tackle_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Firestorm" to="Fight" method="_on_firestorm_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Fireball" to="Fight" method="_on_fireball_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Flood" to="Fight" method="_on_flood_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Splash" to="Fight" method="_on_splash_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Earthquake" to="Fight" method="_on_earthquake_pressed"]
+[connection signal="pressed" from="Fight/Panel/CenterContainer/VFlowContainer/Meteor" to="Fight" method="_on_meteor_pressed"]
 [connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Copy" to="CopyCode/Panel/VBoxContainer/Copy" method="_on_pressed"]
 [connection signal="pressed" from="CopyCode/Panel/VBoxContainer/Play" to="CopyCode/Panel/VBoxContainer/Play" method="_on_pressed"]

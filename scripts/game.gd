@@ -1,6 +1,12 @@
 extends Node2D
 
 @onready
+var attacker: Tinymon = %Attacker
+
+@onready
+var defender: Tinymon = %Defender
+
+@onready
 var tinymon: Tinymon = %Tinymon
 
 @onready 
@@ -90,3 +96,5 @@ func on_start_fight(enemy: Enemy):
 	fight_screen.tinymon1 = self.tinymon.tinymon
 	fight_screen.tinymon2 = enemy.tinymon.tinymon
 	fight_screen.visible = true
+	attacker.set_data(fight_screen.tinymon1)
+	defender.set_data(fight_screen.tinymon2)

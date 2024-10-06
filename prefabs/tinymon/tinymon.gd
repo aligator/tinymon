@@ -7,7 +7,7 @@ class_name Tinymon extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#Global.new_data.connect(on_new_data)
+	Global.new_data.connect(on_new_data)
 	set_data(tinymon)
 	pass
 
