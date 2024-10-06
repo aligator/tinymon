@@ -58,6 +58,33 @@ func spawn_enemy(in_screen: bool = false):
 	enemies.append(instance)
 
 func on_start_fight(enemy: Enemy):
+	var fight_stats = await Global.start_fight(self.tinymon.tinymon, enemy.tinymon.tinymon)
+	
+	if self.tinymon.tinymon.element_type == Tinymon_data.ELEMENT_TYPE.FIRE:
+		%Firestorm.visible = true
+		%Fireball.visible = true
+		%Flood.visible = false
+		%Splash.visible = false
+		%Earthquake.visible = false
+		%Meteor.visible = false
+		
+	if self.tinymon.tinymon.element_type == Tinymon_data.ELEMENT_TYPE.WATER:
+		%Firestorm.visible = false
+		%Fireball.visible = false
+		%Flood.visible = true
+		%Splash.visible = true
+		%Earthquake.visible = false
+		%Meteor.visible = false
+	
+	if self.tinymon.tinymon.element_type == Tinymon_data.ELEMENT_TYPE.AIR:
+		%Firestorm.visible = false
+		%Fireball.visible = false
+		%Flood.visible = false
+		%Splash.visible = false
+		%Earthquake.visible = true
+		%Meteor.visible = true
+	
+	fight_screen.fight_stats = fight_stats
 	fight_screen.tinymon1 = self.tinymon.tinymon
 	fight_screen.tinymon2 = enemy.tinymon.tinymon
 	fight_screen.visible = true

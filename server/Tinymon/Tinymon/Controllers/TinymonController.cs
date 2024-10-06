@@ -37,39 +37,39 @@ public class TinymonController : ControllerBase
 
             // Attack1 
             // Firestorm
-            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Firestorm), new FightResult(0, 0) },
-            { new FightCombination(ElementType.Fire, ElementType.Earth, AttackType.Firestorm), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Firestorm), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Fire, ElementType.Earth, AttackType.Firestorm), new FightResult(0, 3) },
             { new FightCombination(ElementType.Fire, ElementType.Fire, AttackType.Firestorm), new FightResult(1, 1) },
 
             // Flood
-            { new FightCombination(ElementType.Water, ElementType.Fire, AttackType.Flood), new FightResult(0, 1) },
-            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Flood), new FightResult(0, 0) },
+            { new FightCombination(ElementType.Water, ElementType.Fire, AttackType.Flood), new FightResult(0, 3) },
+            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Flood), new FightResult(0, 1) },
             { new FightCombination(ElementType.Water, ElementType.Water, AttackType.Flood), new FightResult(1, 1) },
 
             // Earthshake
-            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Earthshake), new FightResult(0, 0) },
+            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Earthquake), new FightResult(0, 1) },
             {
-                new FightCombination(ElementType.Earth, ElementType.Water, AttackType.Earthshake), new FightResult(0, 1)
+                new FightCombination(ElementType.Earth, ElementType.Water, AttackType.Earthquake), new FightResult(0, 3)
             },
             {
-                new FightCombination(ElementType.Earth, ElementType.Earth, AttackType.Earthshake), new FightResult(1, 1)
+                new FightCombination(ElementType.Earth, ElementType.Earth, AttackType.Earthquake), new FightResult(1, 1)
             },
 
             // Attack2 
             // Fireball
-            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Fireball), new FightResult(0, 0) },
-            { new FightCombination(ElementType.Fire, ElementType.Earth, AttackType.Fireball), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Fire, ElementType.Water, AttackType.Fireball), new FightResult(0, 1) },
+            { new FightCombination(ElementType.Fire, ElementType.Earth, AttackType.Fireball), new FightResult(0, 2) },
             { new FightCombination(ElementType.Fire, ElementType.Fire, AttackType.Fireball), new FightResult(0, 0) },
 
             // Splash
-            { new FightCombination(ElementType.Water, ElementType.Fire, AttackType.Splash), new FightResult(0, 1) },
-            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Splash), new FightResult(0, 0) },
+            { new FightCombination(ElementType.Water, ElementType.Fire, AttackType.Splash), new FightResult(0, 2) },
+            { new FightCombination(ElementType.Water, ElementType.Earth, AttackType.Splash), new FightResult(0, 1) },
             { new FightCombination(ElementType.Water, ElementType.Water, AttackType.Splash), new FightResult(0, 0) },
 
             // Meteor
-            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Meteor), new FightResult(0, 0) },
+            { new FightCombination(ElementType.Earth, ElementType.Fire, AttackType.Meteor), new FightResult(0, 1) },
             {
-                new FightCombination(ElementType.Earth, ElementType.Water, AttackType.Meteor), new FightResult(0, 1)
+                new FightCombination(ElementType.Earth, ElementType.Water, AttackType.Meteor), new FightResult(0, 2)
             },
             { new FightCombination(ElementType.Earth, ElementType.Earth, AttackType.Meteor), new FightResult(0, 0) }
         };

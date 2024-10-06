@@ -8,7 +8,7 @@ var rng = RandomNumberGenerator.new()
 
 var tinymon: Tinymon_data = Tinymon_data.new()
 
-enum FIGHT_TYPE {SCISSOR, STONE, PAPER}
+enum FIGHT_TYPE {TACKLE, FIRESTORM, FIREBALL, FLOOD, SPLASH, EARTHQUAKE, METEOR}
 enum WINNING_TYPE {LOOSER, DRAW, WINNER}
 
 signal new_data
@@ -58,39 +58,55 @@ func new_enemy() -> Tinymon_data:
 	
 	return Tinymon_data.new("00000000-0000-0000-0000-000000000000", "enemy", Image.load_from_file("res://assets/img/tinymon.png"))
 
-func fight(tinymon1: Tinymon_data, type: FIGHT_TYPE, tinymon2: Tinymon_data) -> WINNING_TYPE:
-	var enemy_type = rng.randi_range(0, 2) as FIGHT_TYPE
+func start_fight(attacker: Tinymon_data, defender: Tinymon_data) -> Fight_stats:
+	# Call api
+	var resp := await http.async_request(
+		server + "/Tinymon/" + attacker.id + "/enemy/" + defender.id + "/fight", 
+		PackedStringArray([
+			"content-type: application/json",
+		]), 
+		HTTPClient.Method.METHOD_POST, 
+	)
+	if resp.success():
+		var json = resp.body_as_json()
+		var stats = Fight_stats.new(json.id, json.hpAttacker, json.hpDefender)
+		return stats
+		
+	assert("error start fight")
+	return
+
+func fight(attacker: Tinymon_data, type: FIGHT_TYPE, fight_stats: Fight_stats) -> WINNING_TYPE:
+	# Call api
+	var data_to_send = {
+	  "attack": type,
+	}
+	var json_string = JSON.stringify(data_to_send)
 	
-	if enemy_type == type:
-		return WINNING_TYPE.DRAW
+	var resp := await http.async_request(
+		server + "/Tinymon/" + attacker.id + "/fight/" + fight_stats.fightId, 
+		PackedStringArray([
+			"content-type: application/json",
+		]), 
+		HTTPClient.Method.METHOD_PATCH,
+		json_string
+	)
+	if resp.success():
+		var json = resp.body_as_json()
+		fight_stats.hpAttacker = json.fightBack.hpAttacker
+		fight_stats.hpDefender = json.fightBack.hpDefender
+		
+		attacker.level = json.fightBack.attacker.level
+		attacker.progress = json.fightBack.attacker.progress
+		new_data.emit(attacker)
+		
+		if fight_stats.hpAttacker == 0 && fight_stats.hpDefender:
+			return WINNING_TYPE.DRAW
+		if fight_stats.hpAttacker <= 0:
+			return WINNING_TYPE.LOOSER
+		if fight_stats.hpDefender <= 0:
+			return WINNING_TYPE.WINNER
 	
-	var won = false
-	if type == FIGHT_TYPE.SCISSOR:
-		if enemy_type == FIGHT_TYPE.STONE:
-			won = false
-		elif enemy_type == FIGHT_TYPE.PAPER:
-			won = true
-	elif type == FIGHT_TYPE.STONE:
-		if enemy_type == FIGHT_TYPE.SCISSOR:
-			won = true
-		elif enemy_type == FIGHT_TYPE.PAPER:
-			won = false
-	elif type == FIGHT_TYPE.PAPER:
-		if enemy_type == FIGHT_TYPE.SCISSOR:
-			won = false
-		elif enemy_type == FIGHT_TYPE.STONE:
-			won = true
-	
-	if won:
-		tinymon1.progress -=10
-	else:
-		tinymon1.progress +=10
-	new_data.emit(tinymon1)
-	
-	if won:
-		return WINNING_TYPE.WINNER
-	else:
-		return WINNING_TYPE.LOOSER
-	
+	return WINNING_TYPE.DRAW
+				
 func fight_done(enemy: Tinymon_data):
 	remove_enemy.emit(enemy)

@@ -57,6 +57,21 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="ElementLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+layout_mode = 2
+text = "Element: "
+
+[node name="ElementSelect" type="OptionButton" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Fire"
+popup/item_1/text = "Water"
+popup/item_1/id = 1
+popup/item_2/text = "Earth"
+popup/item_2/id = 2
+
 [node name="NameLabel" type="Label" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
 layout_mode = 2
 text = "Creature Name:"
@@ -66,9 +81,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Name"
-
-[node name="OptionButton" type="OptionButton" parent="CanvasLayer/VBoxContainer/HFlowContainer2"]
-layout_mode = 2
 
 [node name="Play" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2

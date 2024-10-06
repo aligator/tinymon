@@ -10,6 +10,6 @@ public enum AttackType
     Flood,
     Splash,
 
-    Earthshake,
+    Earthquake,
     Meteor
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cun0exjmlym3j"]
+[gd_scene load_steps=10 format=3 uid="uid://cun0exjmlym3j"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_23j03"]
 [ext_resource type="PackedScene" uid="uid://cdhlvfj5ww50c" path="res://prefabs/tinymon/Tinymon.tscn" id="2_if7u3"]
@@ -11,6 +11,38 @@ size = Vector2(64, 64)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cod36"]
 load_path = "res://.godot/imported/background.png-ea92b95dccc3c7990b1d189785e38db1.ctex"
+
+[sub_resource type="GDScript" id="GDScript_5vy2b"]
+script/source = "extends Label
+
+@onready var fight: Fight = %Fight
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	if fight.fight_stats:
+		text = \"You \" + str(fight.fight_stats.hpAttacker) + \" HP\"
+"
+
+[sub_resource type="GDScript" id="GDScript_7euwr"]
+script/source = "extends Label
+
+@onready var fight: Fight = %Fight
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	if fight.fight_stats:
+		text = \"Enemy \" + str(fight.fight_stats.hpDefender) + \" HP\"
+"
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_23j03")
@@ -52,24 +84,68 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VFlowContainer" type="VFlowContainer" parent="Fight/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Fight/CenterContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Fight/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="AttackerHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "1 HP"
+script = SubResource("GDScript_5vy2b")
+
+[node name="DefenderHP" type="Label" parent="Fight/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "1 HP"
+script = SubResource("GDScript_7euwr")
+
+[node name="VFlowContainer" type="VFlowContainer" parent="Fight/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 24
 
-[node name="Scissors" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+[node name="Tackle" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
-text = "Scissors"
+text = "Tackle"
 
-[node name="Stone" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+[node name="Firestorm" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
-text = "Stone"
+text = "Firestorm"
 
-[node name="Paper" type="Button" parent="Fight/CenterContainer/VFlowContainer"]
+[node name="Fireball" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 57
-text = "Paper"
+text = "Fireball"
+
+[node name="Flood" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Flood"
+
+[node name="Splash" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Splash"
+
+[node name="Earthquake" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Earthquake"
+
+[node name="Meteor" type="Button" parent="Fight/CenterContainer/VBoxContainer/VFlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 57
+text = "Meteor"
 
 [node name="Stats" type="CanvasLayer" parent="."]
 
@@ -87,6 +163,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 script = ExtResource("5_ujiaw")
 
-[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Scissors" to="Fight" method="_on_scissors_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Stone" to="Fight" method="_on_stone_pressed"]
-[connection signal="pressed" from="Fight/CenterContainer/VFlowContainer/Paper" to="Fight" method="_on_paper_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Tackle" to="Fight" method="_on_tackle_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Firestorm" to="Fight" method="_on_firestorm_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Fireball" to="Fight" method="_on_fireball_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Flood" to="Fight" method="_on_flood_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Splash" to="Fight" method="_on_splash_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Earthquake" to="Fight" method="_on_earthquake_pressed"]
+[connection signal="pressed" from="Fight/CenterContainer/VBoxContainer/VFlowContainer/Meteor" to="Fight" method="_on_meteor_pressed"]
