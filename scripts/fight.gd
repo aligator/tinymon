@@ -33,7 +33,7 @@ func get_attack_name(attack_type: Global.FIGHT_TYPE) -> String:
 	if attack_type == Global.FIGHT_TYPE.SPLASH:
 		return "Splash"
 	if attack_type == Global.FIGHT_TYPE.EARTHQUAKE:
-		return "Eearthquake"
+		return "Earthquake"
 	if attack_type == Global.FIGHT_TYPE.METEOR:
 		return "Meteor"
 		
@@ -41,6 +41,9 @@ func get_attack_name(attack_type: Global.FIGHT_TYPE) -> String:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if fight_result == null:
+		state = STATE.IDLE
+		
 	if state == STATE.IDLE:
 		%Tackle.disabled = false
 		%Firestorm.disabled = false
@@ -51,15 +54,7 @@ func _process(delta: float) -> void:
 		%Meteor.disabled = false
 		
 	elif state == STATE.ATTACKER:
-		if attacker_timer.is_stopped():
-			%Tackle.disabled = true
-			%Firestorm.disabled = true
-			%Fireball.disabled = true
-			%Flood.disabled = true
-			%Splash.disabled = true
-			%Earthquake.disabled = true
-			%Meteor.disabled = true
-			
+		if attacker_timer.is_stopped():			
 			fight_stats.hpAttacker = fight_result.hpAttacker
 			fight_stats.hpDefender = fight_result.hpDefender
 			
@@ -89,6 +84,14 @@ func _process(delta: float) -> void:
 		state = STATE.IDLE
 	
 func _on_pressed(type: Global.FIGHT_TYPE) -> void:
+	%Tackle.disabled = true
+	%Firestorm.disabled = true
+	%Fireball.disabled = true
+	%Flood.disabled = true
+	%Splash.disabled = true
+	%Earthquake.disabled = true
+	%Meteor.disabled = true
+	
 	fight_result = await Global.fight(tinymon1, type, fight_stats)
 	state = STATE.ATTACKER
 	
