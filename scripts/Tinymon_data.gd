@@ -7,6 +7,7 @@ enum ELEMENT_TYPE {FIRE, WATER, AIR}
 
 # Member variables.
 @export var id: String
+@export var ui_id: String
 @export var tinymon_name: String
 @export var image: Image
 @export var level: int
@@ -23,6 +24,7 @@ func _init(
 	element_type: ELEMENT_TYPE = ELEMENT_TYPE.FIRE
 ):
 	self.id = id
+	self.ui_id = id+str(Time.get_ticks_msec())
 	
 	self.tinymon_name = name
 	self.image = image

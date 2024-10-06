@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 func on_remove_enemy(to_be_removed: Tinymon_data):
 	for i in len(enemies):
 		var enemy = enemies[i]
-		if enemy.tinymon.tinymon.tinymon_name == to_be_removed.tinymon_name:
+		if enemy.tinymon.tinymon.ui_id == to_be_removed.ui_id:
 			enemies.pop_at(i)
 			enemy.queue_free()
 			await spawn_enemy(true)
