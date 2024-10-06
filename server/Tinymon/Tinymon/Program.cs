@@ -14,6 +14,7 @@ builder.Services.AddCors(options =>
                 "https://html-classic.itch.zone",
                 "http://localhost:5119");
             policy.WithHeaders("*");
+            policy.WithMethods("*");
         });
 });
 
